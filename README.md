@@ -5,7 +5,8 @@
 
 ### Prerequisites:
 * Python Installed (Recommended version 3.8 or above). Link: https://www.python.org/downloads/
-* Check python installation, on cmd type: `python`
+* Check python version, on cmd type: `python --version`
+* Check if pip is installed, on cmd type: `pip --version`
 * Visual Code Installed. Link: https://code.visualstudio.com/download
 * Go to cmd and type: `pip install selenium`
 * Driver for launching the automation (We will use chromedriver.exe, Be sure to match the version of Chrome you have). Link: https://chromedriver.chromium.org/downloads

@@ -52,12 +52,11 @@ Hint: only need to change the last 5 digits
 '''
 
 courts_list = [
-    "https://cultureloisirs.gatineau.ca/ic3.Production/#/U5200/view/73543",
-    "https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73546",
-    "https://cultureloisirs.gatineau.ca/ic3.Production/#/U5200/view/73515",
+    "https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73515",
+    "https://cultureloisirs.gatineau.ca/ic3.Production/#/U5200/view/73597",
     "https://cultureloisirs.gatineau.ca/ic3.production/#/U5200/view/73543"
 ]
-
+     
 EMAIL = "XYZ@example.com"
 PASSWORD = "1234"        
 PATH = "D:\chromedriver.exe"
@@ -75,7 +74,7 @@ password.send_keys(Keys.RETURN)
 
 while True:
     now = datetime.datetime.now().time()
-    if now.hour == 14 and now.minute == 26 and now.second == 00:
+    if now.hour == 17 and now.minute == 30 and now.second == 00:
         driver.find_element_by_css_selector('[alt="Activités Culture et loisirs"]').click()
         driver.find_element_by_xpath('//*[@id="ProgrammeCultureLoisirs"]/div[2]/div[1]/input[2]').click()
         p = driver.current_window_handle
@@ -84,37 +83,33 @@ while True:
             if(w!=p):
                 driver.switch_to.window(w)
                 print("switch tabs successful!")
-                time.sleep(1)
         while True:
             driver.refresh() 
             time.sleep(1)
-            searchbar = WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, 'u2010_edSearch')))
-            if searchbar:
+            searchbar = driver.find_elements_by_xpath('//*[@id="u2010_btnSearch"]')
+            if len(searchbar) > 0:
                 break
         court_num = 0
         # TODO: court not available exception handling 
         for court in courts_list:
             court_num += 1
             driver.get(court)
-            driver.implicitly_wait(10) # seconds
-            try:
-                myDynamicElement = driver.find_element_by_xpath("//*[@id='u5200_btnRegisterSecond']")
-            except NoSuchElementException:
+            driver.implicitly_wait(1.5) # seconds
+            if len(driver.find_elements_by_xpath("//*[@id='u5200_btnRegisterSecond']")) > 0:
+                driver.find_element_by_xpath("//*[@id='u5200_btnRegisterSecond']").click()
+                print("Clicked Inscrire button\n")
+                driver.find_element_by_xpath("//*[@id='u3600_btnSelect0']").click()
+                print("Clicked person\n")
+                # Checkout
+                driver.find_element_by_xpath("//*[@id='u3600_btnCheckout0']").click()
+                print("Clicked checkout button\n")
+            else:
                 print("Court not available")
                 if court_num == len(courts_list):
                     driver.get("https://cultureloisirs.gatineau.ca/IC3.Production/#/U3600/cartshopping")
                     break
                 else:
                     continue
-            myDynamicElement.click()
-            print("Clicked Inscrire button\n")
-            myDynamicElement = driver.find_element_by_xpath("//*[@id='u3600_btnSelect0']")
-            myDynamicElement.click()
-            print("Clicked person\n")
-            # Checkout part
-            myDynamicElement = driver.find_element_by_xpath("//*[@id='u3600_btnCheckout0']")
-            myDynamicElement.click()
-            print("Clicked checkout button\n")
 
         time.sleep(2)
         button = driver.find_element_by_xpath("//*[@id='u3600_btnCartShoppingCompleteStep']")

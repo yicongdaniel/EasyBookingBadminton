@@ -1,4 +1,4 @@
-## EasyBookingBadminton by Daniel Z
+## EasyBookingBadminton by Sam L, Daniel Z
 
 ### Release 1.0:
 * Users are able to automatically sign in and finish booking multiple courts

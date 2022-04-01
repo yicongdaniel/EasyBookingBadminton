@@ -9,6 +9,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 import time
 
 # TODO: Important!!! Please read the following instruction
@@ -45,12 +46,13 @@ import time
 # Hint: only need to change the last 5 digits
 
 courts_list = [
-    "https://cultureloisirs.gatineau.ca/ic3.Production/#/U5200/view/73384",
-    "https://cultureloisirs.gatineau.ca/ic3.Production/#/U5200/view/73581"
+    "https://cultureloisirs.gatineau.ca/ic3.Production/#/U5200/view/73543",
+    "https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73546",
+    "https://cultureloisirs.gatineau.ca/ic3.Production/#/U5200/view/73515",
+    "https://cultureloisirs.gatineau.ca/ic3.production/#/U5200/view/73543"
 ]
 
 EMAIL = "XYZ@example.com"
-# PASSWORD2 = "Minouandchoue2!"
 PASSWORD = "1234"        
 PATH = "D:\chromedriver.exe"
 URL = "https://portailcitoyen.gatineau.ca/"
@@ -68,7 +70,7 @@ password.send_keys(Keys.RETURN)
 
 while True:
     now = datetime.datetime.now().time()
-    if now.hour == 12 and now.minute == 57 and now.second == 10:
+    if now.hour == 14 and now.minute == 26 and now.second == 00:
         driver.find_element_by_css_selector('[alt="Activités Culture et loisirs"]').click()
         driver.find_element_by_xpath('//*[@id="ProgrammeCultureLoisirs"]/div[2]/div[1]/input[2]').click()
         p = driver.current_window_handle
@@ -84,25 +86,30 @@ while True:
             searchbar = WebDriverWait(driver, 40).until(EC.element_to_be_clickable((By.ID, 'u2010_edSearch')))
             if searchbar:
                 break
-        court_num = 1
+        court_num = 0
+        # TODO: court not available exception handling 
         for court in courts_list:
+            court_num += 1
             driver.get(court)
             driver.implicitly_wait(10) # seconds
-            myDynamicElement = driver.find_element_by_xpath("//*[@id='u5200_btnRegisterSecond']")
+            try:
+                myDynamicElement = driver.find_element_by_xpath("//*[@id='u5200_btnRegisterSecond']")
+            except NoSuchElementException:
+                print("Court not available")
+                if court_num == len(courts_list):
+                    driver.get("https://cultureloisirs.gatineau.ca/IC3.Production/#/U3600/cartshopping")
+                    break
+                else:
+                    continue
             myDynamicElement.click()
             print("Clicked Inscrire button\n")
-            
             myDynamicElement = driver.find_element_by_xpath("//*[@id='u3600_btnSelect0']")
             myDynamicElement.click()
             print("Clicked person\n")
-            print ("Court", court_num, "selected")
-            court_num += 1
-
-        # Checkout part
-        # driver.implicitly_wait(10) # seconds
-        myDynamicElement = driver.find_element_by_xpath("//*[@id='u3600_btnCheckout0']")
-        myDynamicElement.click()
-        print("Clicked checkout button\n")
+            # Checkout part
+            myDynamicElement = driver.find_element_by_xpath("//*[@id='u3600_btnCheckout0']")
+            myDynamicElement.click()
+            print("Clicked checkout button\n")
 
         time.sleep(2)
         button = driver.find_element_by_xpath("//*[@id='u3600_btnCartShoppingCompleteStep']")

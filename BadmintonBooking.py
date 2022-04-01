@@ -1,6 +1,11 @@
-__author__ = "Daniel Zhang, Sam Liu"
-__version__ = "1.0"
-
+"""
+----------------------------------------------------------------------------------------------------
+Project: Booking Automation
+Version: 1.0
+Authors: Daniel Zhang, Sam Liu
+Description: This script books badminton courts automaticlly on cultureloisirs.gatineau website.
+----------------------------------------------------------------------------------------------------
+"""
 import datetime
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -10,39 +15,40 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+'''
+TODO: Important!!! Please read the following instruction
+Please enter your Email and password in the variables: 
+For example 
+Email = "danielyicong@gmail.com"  
+Password = "123456789" 
+Booking courts part
+Phase the court's URL below. For example:
+If you want to book only one court, do it like this:
+courts_list = ["https://cultureloisirs.gatineau.ca/ic3.production/#/U5200/view/73376"]
+If you want two courts do it like this
+courts_list = ["https://cultureloisirs.gatineau.ca/ic3.production/#/U5200/view/73376", 
+            "https://cultureloisirs.gatineau.ca/ic3.production/#/U5200/view/73292"]
 
-# TODO: Important!!! Please read the following instruction
-# Please enter your Email and password in the variables: 
-# For example 
-# Email = "danielyicong@gmail.com"  
-# Password = "123456789" 
-# Booking courts part
-# Phase the court's URL below. For example:
-# If you want to book only one court, do it like this:
-# courts_list = ["https://cultureloisirs.gatineau.ca/ic3.production/#/U5200/view/73376"]
-# If you want two courts do it like this
-# courts_list = ["https://cultureloisirs.gatineau.ca/ic3.production/#/U5200/view/73376", 
-#             "https://cultureloisirs.gatineau.ca/ic3.production/#/U5200/view/73292"]
+CSG:
+Tuesday 730
+https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73526
+Tuesday 845
+https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73527
+Thursay 730
+https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73541
+Thursday 845
+https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73542
+Sunday 19:30
+https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73507
 
-# CSG:
-# Tuesday 730
-# https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73526
-# Tuesday 845
-# https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73527
-# Thursay 730
-# https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73541
-# Thursday 845
-# https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73542
-# Sunday 19:30
-# https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73507
+Versant
+Wednesday 730
+https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73566
+Wednesday 855
+https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73567
 
-# Versant
-# Wednesday 730
-# https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73566
-# Wednesday 855
-# https://cultureloisirs.gatineau.ca/IC3.Production/#/U5200/view/73567
-
-# Hint: only need to change the last 5 digits
+Hint: only need to change the last 5 digits
+'''
 
 courts_list = [
     "https://cultureloisirs.gatineau.ca/ic3.Production/#/U5200/view/73384",
@@ -50,7 +56,6 @@ courts_list = [
 ]
 
 EMAIL = "XYZ@example.com"
-# PASSWORD2 = "Minouandchoue2!"
 PASSWORD = "1234"        
 PATH = "D:\chromedriver.exe"
 URL = "https://portailcitoyen.gatineau.ca/"
@@ -63,7 +68,6 @@ username = driver.find_element_by_name("Email")
 username.send_keys(EMAIL)
 password = driver.find_element_by_name("Password")
 password.send_keys(PASSWORD)
-
 password.send_keys(Keys.RETURN)
 
 while True:
